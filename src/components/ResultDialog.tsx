@@ -103,7 +103,7 @@ export default function AlertDialogSlide({
           <div className="content-text">
             <div className="content-header-container">
               <IconShowing />
-              <div>
+              <div className="my-auto">
                 <strong className="header-text">{groupName}</strong>
                 <br />
                 <span className="text">{groupDetail}</span>
