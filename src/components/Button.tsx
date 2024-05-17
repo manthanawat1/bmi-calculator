@@ -7,6 +7,7 @@ import { ButtonProps } from "@mui/base/Button";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import ResultDialog from "./ResultDialog";
 import BodyRatioInterface from "./BodyRatioInterface";
+import KeyContextInterface from "./KeyContextInterface";
 
 const CustomButton = React.forwardRef(function CustomButton(
   props: ButtonProps,
@@ -44,9 +45,9 @@ export default function UseButton({ getValue }: DataInterface) {
   const handleGetValue = () => {
     const dataForCalculate = getValue();
 
-    if (dataForCalculate) {
-      const gender: string = dataForCalculate[0];
-      const bodyRatio: BodyRatioInterface = dataForCalculate[1];
+    if (dataForCalculate?.length === 2) {
+      const gender = dataForCalculate[0] as string;
+      const bodyRatio = dataForCalculate[1] as BodyRatioInterface;
 
       if (gender && bodyRatio && bodyRatio.weight && bodyRatio.height) {
         const weight = parseFloat(bodyRatio.weight);
@@ -127,7 +128,9 @@ export default function UseButton({ getValue }: DataInterface) {
           closeModal={handleClosedModal}
           openModal={modal}
           bmiValue={bmiValueRef.current}
-          bmiClassNameValue={bmiClassNameRef.current}
+          bmiClassNameValue={
+            bmiClassNameRef.current as keyof KeyContextInterface
+          }
         />
       ) : null}
     </Stack>

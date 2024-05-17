@@ -13,6 +13,8 @@ import SentimentDissatisfiedOutlinedIcon from "@mui/icons-material/SentimentDiss
 import SentimentVeryDissatisfiedOutlinedIcon from "@mui/icons-material/SentimentVeryDissatisfiedOutlined";
 import SickOutlinedIcon from "@mui/icons-material/SickOutlined";
 
+import ContextInterface from "./ContextInterface";
+import KeyContextInterface from "./KeyContextInterface";
 import context from "../../src/context.json";
 
 const Transition = React.forwardRef(function Transition(
@@ -34,13 +36,7 @@ interface PropsInterface {
   closeModal: () => void;
   openModal: boolean;
   bmiValue: number;
-  bmiClassNameValue: string;
-}
-
-interface ContextInterface {
-  group_name: string;
-  group_detail: string;
-  others: string[];
+  bmiClassNameValue: keyof KeyContextInterface;
 }
 
 export default function AlertDialogSlide({
@@ -54,49 +50,43 @@ export default function AlertDialogSlide({
   const [recommend, setRecommend] = React.useState<string[]>([]);
 
   React.useEffect(() => {
-    const { group_name, group_detail, others }: ContextInterface =
-      context[bmiClassNameValue];
-    setGroupName(group_name);
-    setGroupDetail(group_detail);
-    setRecommend(others);
+    const bmiContext = context[bmiClassNameValue] as ContextInterface;
+    setGroupName(bmiContext.group_name);
+    setGroupDetail(bmiContext.group_detail);
+    setRecommend(bmiContext.others);
   }, [bmiClassNameValue]);
 
   const IconShowing = () => {
-    let iconTemplate = null;
     switch (bmiClassNameValue) {
       case "obese(Class 2)":
-        iconTemplate = (
-          <SickOutlinedIcon sx={{ fontSize: "4.5rem", color: "green" }} />
+        return (
+          <SickOutlinedIcon sx={{ fontSize: "4.5rem", color: "#e74c3c" }} />
         );
-        break;
       case "obese(Class 1)":
-        iconTemplate = (
+        return (
           <SentimentVeryDissatisfiedOutlinedIcon
-            sx={{ fontSize: "4.5rem", color: "green" }}
+            sx={{ fontSize: "4.5rem", color: "#e67e22" }}
           />
         );
-        break;
       case "overweight":
-        iconTemplate = (
+        return (
           <SentimentDissatisfiedOutlinedIcon
-            sx={{ fontSize: "4.5rem", color: "green" }}
+            sx={{ fontSize: "4.5rem", color: "#f1c40f" }}
           />
         );
-        break;
       case "normal":
-        iconTemplate = (
-          <MoodOutlinedIcon sx={{ fontSize: "4.5rem", color: "green" }} />
+        return (
+          <MoodOutlinedIcon sx={{ fontSize: "4.5rem", color: "#3498db" }} />
         );
-        break;
       case "underweight":
-        iconTemplate = (
+        return (
           <SentimentNeutralOutlinedIcon
-            sx={{ fontSize: "4.5rem", color: "green" }}
+            sx={{ fontSize: "4.5rem", color: "#2ecc71" }}
           />
         );
-        break;
+      default:
+        return null;
     }
-    return iconTemplate;
   };
 
   return (
